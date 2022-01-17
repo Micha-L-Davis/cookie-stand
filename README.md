@@ -1,7 +1,7 @@
 # LAB - 06
 ## Cookie Stand
 
-dooooot
+The first part of this project is to demonstrate manipulation of the DOM to produce a list of hourly sales at several store locations
 
 ### Author: Micha Davis
 
@@ -11,5 +11,5 @@ dooooot
 * [Mozilla MDN Web Docs](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide)
 
 ### Reflections and Comments
-* boooot
-* roooot
+* This was fun!
+* Nobody honestly wants a fish shaped cookie.
