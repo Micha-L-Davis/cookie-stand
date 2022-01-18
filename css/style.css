@@ -1,0 +1,20 @@
+body {
+  background-color: darkcyan;
+  color: palegoldenrod;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+table, div {
+  background-color: rgb(12, 92, 92);
+}
+
+mark {
+  font: 'Roboto';
+  color: darkcyan;
+  background-color: palegoldenrod;
+}
+
+.data {
+  font-family: Arial, Helvetica, sans-serif;
+  color: aliceblue;
+}
