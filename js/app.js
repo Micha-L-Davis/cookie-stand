@@ -9,7 +9,7 @@ let seattle = {
   avgCookiePerSale: 6.3,
   hourlySales: [],
   randomHourlyCustomers: function() {
-    return Math.floor(Math.random() * (this.maxCust - this.minCust + 1) + this.minCust);
+    return randomIntInclusive(this.minCust, this.maxCust);
   },
   populateSalesData: function() {
     let total = 0;
@@ -17,15 +17,7 @@ let seattle = {
       let sales = Math.floor(this.randomHourlyCustomers() * this.avgCookiePerSale);
       total += sales;
       let time = i + 6;
-      if (time <= 11){
-        time = `${time}am`;
-      }
-      else if (time === 12){
-        time = `${time}pm`;
-      }
-      else {
-        time = `${time - 12}pm`;
-      }
+      time = convertTo12Hr(time);
       this.hourlySales[i] = `${time}: ${sales} cookies`;
     }
     this.hourlySales[13] = `Total: ${total} cookies`;
@@ -39,7 +31,7 @@ let tokyo = {
   avgCookiePerSale: 1.2,
   hourlySales: [],
   randomHourlyCustomers: function() {
-    return Math.floor(Math.random() * (this.maxCust - this.minCust + 1) + this.minCust);
+    return randomIntInclusive(this.minCust, this.maxCust);
   },
   populateSalesData: function() {
     let total = 0;
@@ -47,15 +39,7 @@ let tokyo = {
       let sales = Math.floor(this.randomHourlyCustomers() * this.avgCookiePerSale);
       total += sales;
       let time = i + 6;
-      if (time <= 11){
-        time = `${time}am`;
-      }
-      else if (time === 12){
-        time = `${time}pm`;
-      }
-      else {
-        time = `${time - 12}pm`;
-      }
+      time = convertTo12Hr(time);
       this.hourlySales[i] = `${time}: ${sales} cookies`;
     }
     this.hourlySales[13] = `Total: ${total} cookies`;
@@ -69,7 +53,7 @@ let dubai = {
   avgCookiePerSale: 2.3,
   hourlySales: [],
   randomHourlyCustomers: function() {
-    return Math.floor(Math.random() * (this.maxCust - this.minCust + 1) + this.minCust);
+    return randomIntInclusive(this.minCust, this.maxCust);
   },
   populateSalesData: function() {
     let total = 0;
@@ -77,15 +61,7 @@ let dubai = {
       let sales = Math.floor(this.randomHourlyCustomers() * this.avgCookiePerSale);
       total += sales;
       let time = i + 6;
-      if (time <= 11){
-        time = `${time}am`;
-      }
-      else if (time === 12){
-        time = `${time}pm`;
-      }
-      else {
-        time = `${time - 12}pm`;
-      }
+      time = convertTo12Hr(time);
       this.hourlySales[i] = `${time}: ${sales} cookies`;
     }
     this.hourlySales[13] = `Total: ${total} cookies`;
@@ -99,7 +75,7 @@ let paris = {
   avgCookiePerSale: 2.3,
   hourlySales: [],
   randomHourlyCustomers: function() {
-    return Math.floor(Math.random() * (this.maxCust - this.minCust + 1) + this.minCust);
+    return randomIntInclusive(this.minCust, this.maxCust);
   },
   populateSalesData: function() {
     let total = 0;
@@ -107,15 +83,7 @@ let paris = {
       let sales = Math.floor(this.randomHourlyCustomers() * this.avgCookiePerSale);
       total += sales;
       let time = i + 6;
-      if (time <= 11){
-        time = `${time}am`;
-      }
-      else if (time === 12){
-        time = `${time}pm`;
-      }
-      else {
-        time = `${time - 12}pm`;
-      }
+      time = convertTo12Hr(time);
       this.hourlySales[i] = `${time}: ${sales} cookies`;
     }
     this.hourlySales[13] = `Total: ${total} cookies`;
@@ -129,7 +97,7 @@ let lima = {
   avgCookiePerSale: 4.6,
   hourlySales: [],
   randomHourlyCustomers: function() {
-    return Math.floor(Math.random() * (this.maxCust - this.minCust + 1) + this.minCust);
+    return randomIntInclusive(this.minCust, this.maxCust);
   },
   populateSalesData: function() {
     let total = 0;
@@ -137,15 +105,7 @@ let lima = {
       let sales = Math.floor(this.randomHourlyCustomers() * this.avgCookiePerSale);
       total += sales;
       let time = i + 6;
-      if (time <= 11){
-        time = `${time}am`;
-      }
-      else if (time === 12){
-        time = `${time}pm`;
-      }
-      else {
-        time = `${time - 12}pm`;
-      }
+      time = convertTo12Hr(time);
       this.hourlySales[i] = `${time}: ${sales} cookies`;
     }
     this.hourlySales[13] = `Total: ${total} cookies`;
@@ -153,6 +113,23 @@ let lima = {
 };
 
 let stores = [seattle, tokyo, dubai, paris, lima];
+
+function randomIntInclusive(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function convertTo12Hr(time) {
+  if (time <= 11) {
+    time = `${time}am`;
+  }
+  else if (time === 12) {
+    time = `${time}pm`;
+  }
+  else {
+    time = `${time - 12}pm`;
+  }
+  return time;
+}
 
 function createSalesLists() {
   for (let i = 0; i < stores.length; i++) {
