@@ -132,6 +132,8 @@ function totalColumnValues(arr2D) {
   return subTotals;
 }
 
-const randomIntInclusive = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+function randomIntInclusive(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
 //#endregion
