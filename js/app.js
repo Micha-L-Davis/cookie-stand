@@ -8,7 +8,7 @@ let salesTableSection = document.getElementById('sales-table');
 
 //#region Store Constructor and Prototyping
 
-let Store = function(location, minCust, maxCust, avgCookiePerSale) {
+let Store = function (location, minCust, maxCust, avgCookiePerSale) {
   this.location = location;
   this.maxCust = maxCust;
   this.minCust = minCust;
@@ -23,11 +23,11 @@ let Store = function(location, minCust, maxCust, avgCookiePerSale) {
 Store.stores = [];
 Store.trElems = [];
 
-Store.prototype.randomHourlyCustomers = function() {
+Store.prototype.randomHourlyCustomers = function () {
   return randomIntInclusive(this.minCust, this.maxCust);
 };
 
-Store.prototype.buildSalesData = function() {
+Store.prototype.buildSalesData = function () {
   let total = 0;
   this.hourlySales[0] = this.location;
   for (let i = 1; i < 15; i++) {
@@ -38,12 +38,11 @@ Store.prototype.buildSalesData = function() {
   this.hourlySales[15] = total;
 };
 
-Store.prototype.renderStore = function(parent) {
+Store.prototype.renderStore = function (parent) {
   this.buildSalesData();
   parent.appendChild(this.trElem);
   populateRowData(this.hourlySales, this.trElem);
 };
-
 
 //#endregion
 
@@ -68,16 +67,6 @@ renderSalesTable();
 
 //#region Global Functions
 
-function randomIntInclusive(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-function createElement(tag, parent) {
-  const elem = document.createElement(tag);
-  parent.appendChild(elem);
-  return elem;
-}
-
 function renderSalesTable() {
   const tableElem = createElement('table', salesTableSection);
   const theadElem = createElement('thead', tableElem);
@@ -85,7 +74,7 @@ function renderSalesTable() {
   const tfootElem = createElement('tfoot', tableElem);
 
   const trElemHeader = createElement('tr', theadElem);
-  for (let i = 0; i < headers.length; i++){
+  for (let i = 0; i < headers.length; i++) {
     renderHeader(trElemHeader, headers[i]);
   }
 
@@ -97,9 +86,15 @@ function renderSalesTable() {
 
   const trElemFooter = createElement('tr', tfootElem);
   let footerData = totalColumnValues(tableData);
-  for (let i = 0; i < footerData.length; i++){
+  for (let i = 0; i < footerData.length; i++) {
     renderFooter(trElemFooter, footerData[i]);
   }
+}
+
+function createElement(tag, parent) {
+  const elem = document.createElement(tag);
+  parent.appendChild(elem);
+  return elem;
 }
 
 function renderFooter(parent, data) {
@@ -113,19 +108,19 @@ function renderHeader(parent, data) {
 }
 
 function populateRowData(arr, parent) {
-  for (let i = 0; i < arr.length; i++){
+  for (let i = 0; i < arr.length; i++) {
     const tdElem = createElement('td', parent);
     tdElem.textContent = `${arr[i]}`;
   }
 }
 
-function totalColumnValues(arr2D){
+function totalColumnValues(arr2D) {
   let subTotals = [];
   subTotals[0] = 'Totals';
   for (let i = 0; i < arr2D.length; i++) {
     const row = arr2D[i];
     for (let j = 1; j < row.length; j++) {
-      if (!subTotals[j]){
+      if (!subTotals[j]) {
         subTotals[j] = 0;
       }
       const cell = row[j];
@@ -136,5 +131,7 @@ function totalColumnValues(arr2D){
   }
   return subTotals;
 }
+
+const randomIntInclusive = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 //#endregion
