@@ -1,0 +1,21 @@
+body {
+  background-color: darkcyan;
+  color: rgb(248, 243, 190);
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+table{
+  background-color: rgb(12, 92, 92);
+  border: 2px, solid, black;
+}
+
+mark {
+  font: 'Roboto';
+  color: rgb(12, 92, 92);
+  background-color: rgb(248, 243, 190);
+}
+
+.data {
+  font-family: Arial, Helvetica, sans-serif;
+  color: aliceblue;
+}
