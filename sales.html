@@ -27,21 +27,21 @@
   <section id="form">
     <form id="new-store-form">
       <fieldset>
-        <legend>Add a store location</legend>
+        <legend>Add/Update a store location</legend>
         <label>Location
-          <input type="text" name="location">
+          <input type="text" name="location" required="required">
         </label>
         <label>Expected Min. Customers per Hour
-          <input type="number" name="minCust">
+          <input type="number" name="minCust" required="required">
         </label>
         <label>Expected Max. Customers per Hour
-          <input type="number" name="maxCust">
+          <input type="number" name="maxCust" required="required">
         </label>
         <label>Avg. Cookies per Sale
-          <input type="number" name="avgCookiePerSale">
+          <input type="float" name="avgCookiePerSale" required="required">
         </label>
       </fieldset>
-      <button type="submit">Add Store</button>
+      <button type="submit">Update Table</button>
     </form>
   </section>
   <footer></footer>
