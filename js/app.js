@@ -75,6 +75,7 @@ renderSalesTable();
 
 //#region Global Functions
 
+// handles the initial rendering of the table on page load
 function renderSalesTable() {
   const tableElem = createElement('table', salesTableSection);
   const theadElem = createElement('thead', tableElem);
@@ -93,12 +94,14 @@ function renderSalesTable() {
   renderFooter(tfootElem);
 }
 
+// creates an html tag element and appends it to a parent in the DOM
 function createElement(tag, parent) {
   const elem = document.createElement(tag);
   parent.appendChild(elem);
   return elem;
 }
 
+// creates a footer row and populates the row data
 function renderFooter(parent) {
   const trElemFooter = createElement('tr', parent);
   let footerData = totalColumnValues(Store.tableData);
@@ -109,11 +112,13 @@ function renderFooter(parent) {
   return trElemFooter;
 }
 
+// creates a row of th elements in the table header section
 function renderHeader(parent, data) {
   const thElem = createElement('th', parent);
   thElem.textContent = `${data}`;
 }
 
+// places each item in an array into td tags in the parent row
 function populateRowData(arr, parent) {
   for (let i = 0; i < arr.length; i++) {
     const tdElem = createElement('td', parent);
@@ -121,6 +126,7 @@ function populateRowData(arr, parent) {
   }
 }
 
+// totals each column in a 2D array and returns an array of the results
 function totalColumnValues(arr2D) {
   let subTotals = [];
   subTotals[0] = 'Totals';
@@ -137,10 +143,12 @@ function totalColumnValues(arr2D) {
   return subTotals;
 }
 
+// returns a random int between min and max (inclusive)
 function randomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+// updates the table when a new store is added or store data is changed
 function updateTableData(store, isNew = false) {
   const tableBodyElem = salesTableSection.firstChild.firstChild.nextSibling;
   store.renderStore(tableBodyElem, isNew);
@@ -148,12 +156,14 @@ function updateTableData(store, isNew = false) {
   tableFooterElem.firstChild.replaceWith(renderFooter(tableFooterElem));
 }
 
+// removes all the children of a given DOM node
 function removeAllChildren(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
   }
 }
 
+// submit button event callback function to process form data
 function handleAddStore(event) {
   event.preventDefault();
   let store;
