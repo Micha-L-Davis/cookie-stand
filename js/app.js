@@ -3,6 +3,7 @@
 //#region Global Document Reference
 
 let salesTableSection = document.getElementById('sales-table');
+let salesFormSection = document.getElementById('form');
 
 //#endregion
 
@@ -10,8 +11,8 @@ let salesTableSection = document.getElementById('sales-table');
 
 let Store = function (location, minCust, maxCust, avgCookiePerSale) {
   this.location = location;
-  this.maxCust = maxCust;
   this.minCust = minCust;
+  this.maxCust = maxCust;
   this.avgCookiePerSale = avgCookiePerSale;
   this.hourlySales = [];
   this.trElem = document.createElement('tr');
@@ -22,6 +23,7 @@ let Store = function (location, minCust, maxCust, avgCookiePerSale) {
 
 Store.stores = [];
 Store.trElems = [];
+Store.tableData = [];
 
 Store.prototype.randomHourlyCustomers = function () {
   return randomIntInclusive(this.minCust, this.maxCust);
@@ -31,11 +33,12 @@ Store.prototype.buildSalesData = function () {
   let total = 0;
   this.hourlySales[0] = this.location;
   for (let i = 1; i < 15; i++) {
-    let sales = Math.floor(this.randomHourlyCustomers() * this.avgCookiePerSale);
+    let sales = Math.round(this.randomHourlyCustomers() * this.avgCookiePerSale);
     total += sales;
     this.hourlySales[i] = sales;
   }
   this.hourlySales[15] = total;
+  Store.tableData.push(this.hourlySales);
 };
 
 Store.prototype.renderStore = function (parent) {
@@ -67,6 +70,7 @@ renderSalesTable();
 
 //#region Global Functions
 
+
 function renderSalesTable() {
   const tableElem = createElement('table', salesTableSection);
   const theadElem = createElement('thead', tableElem);
@@ -78,17 +82,12 @@ function renderSalesTable() {
     renderHeader(trElemHeader, headers[i]);
   }
 
-  let tableData = [];
+
   for (let i = 0; i < Store.stores.length; i++) {
     Store.stores[i].renderStore(tbodyElem);
-    tableData[i] = Store.stores[i].hourlySales;
   }
 
-  const trElemFooter = createElement('tr', tfootElem);
-  let footerData = totalColumnValues(tableData);
-  for (let i = 0; i < footerData.length; i++) {
-    renderFooter(trElemFooter, footerData[i]);
-  }
+  renderFooter(tfootElem);
 }
 
 function createElement(tag, parent) {
@@ -97,9 +96,14 @@ function createElement(tag, parent) {
   return elem;
 }
 
-function renderFooter(parent, data) {
-  const thElem = createElement('th', parent);
-  thElem.textContent = `${data}`;
+function renderFooter(parent) {
+  const trElemFooter = createElement('tr', parent);
+  let footerData = totalColumnValues(Store.tableData);
+  for (let i = 0; i < footerData.length; i++) {
+    const thElem = createElement('th', trElemFooter);
+    thElem.textContent = `${footerData[i]}`;
+  }
+  return trElemFooter;
 }
 
 function renderHeader(parent, data) {
@@ -133,5 +137,25 @@ function totalColumnValues(arr2D) {
 function randomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+function handleAddStore(event) {
+  event.preventDefault();
+  let newStore = new Store(
+    event.target.location.value,
+    +event.target.minCust.value,
+    +event.target.maxCust.value,
+    +event.target.avgCookiePerSale.value);
+
+  const tableBodyElem = salesTableSection.firstChild.firstChild.nextSibling;
+  newStore.renderStore(tableBodyElem);
+  const tableFooterElem = salesTableSection.firstChild.lastChild;
+  tableFooterElem.firstChild.replaceWith(renderFooter(tableFooterElem));
+}
+
+//#endregion
+
+//#region Event Listeners
+
+salesFormSection.addEventListener('submit', handleAddStore);
 
 //#endregion
