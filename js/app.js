@@ -41,9 +41,14 @@ Store.prototype.buildSalesData = function () {
   Store.tableData.push(this.hourlySales);
 };
 
-Store.prototype.renderStore = function (parent) {
+Store.prototype.renderStore = function (parent, isNew = false) {
   this.buildSalesData();
-  parent.appendChild(this.trElem);
+  if (isNew) {
+    parent.appendChild(this.trElem);
+  }
+  else {
+    removeAllChildren(this.trElem);
+  }
   populateRowData(this.hourlySales, this.trElem);
 };
 
@@ -70,7 +75,6 @@ renderSalesTable();
 
 //#region Global Functions
 
-
 function renderSalesTable() {
   const tableElem = createElement('table', salesTableSection);
   const theadElem = createElement('thead', tableElem);
@@ -82,9 +86,8 @@ function renderSalesTable() {
     renderHeader(trElemHeader, headers[i]);
   }
 
-
   for (let i = 0; i < Store.stores.length; i++) {
-    Store.stores[i].renderStore(tbodyElem);
+    Store.stores[i].renderStore(tbodyElem, true);
   }
 
   renderFooter(tfootElem);
@@ -138,18 +141,46 @@ function randomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function handleAddStore(event) {
-  event.preventDefault();
-  let newStore = new Store(
-    event.target.location.value,
-    +event.target.minCust.value,
-    +event.target.maxCust.value,
-    +event.target.avgCookiePerSale.value);
-
+function updateTableData(store, isNew = false) {
   const tableBodyElem = salesTableSection.firstChild.firstChild.nextSibling;
-  newStore.renderStore(tableBodyElem);
+  store.renderStore(tableBodyElem, isNew);
   const tableFooterElem = salesTableSection.firstChild.lastChild;
   tableFooterElem.firstChild.replaceWith(renderFooter(tableFooterElem));
+}
+
+function removeAllChildren(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}
+
+function handleAddStore(event) {
+  event.preventDefault();
+  let store;
+
+  for (let i = 0; i < Store.stores.length; i++) {
+    if (event.target.location.value === Store.stores[i].location) {
+      store = Store.stores[i];
+      break;
+    }
+  }
+
+  if (!store) {
+    store = new Store(
+      event.target.location.value,
+      +event.target.minCust.value,
+      +event.target.maxCust.value,
+      +event.target.avgCookiePerSale.value);
+    updateTableData(store, true);
+  }
+  else {
+    store.minCust = +event.target.minCust.value;
+    store.maxCust = +event.target.maxCust.value;
+    store.avgCookiePerSale = +event.target.avgCookiePerSale.value;
+    store.hourlySales = [];
+    updateTableData(store);
+  }
+
 }
 
 //#endregion
