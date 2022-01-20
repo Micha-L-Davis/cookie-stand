@@ -125,8 +125,6 @@ function totalColumnValues(arr2D) {
       }
       const cell = row[j];
       subTotals[j] += cell;
-      console.log(cell);
-      console.log(subTotals[j]);
     }
   }
   return subTotals;
