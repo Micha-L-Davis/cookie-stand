@@ -1,6 +1,6 @@
 'use strict';
 
-//#region Global Document Reference
+//#region Global Document References
 
 let salesTableSection = document.getElementById('sales-table');
 let salesFormSection = document.getElementById('form');
@@ -9,6 +9,7 @@ let salesFormSection = document.getElementById('form');
 
 //#region Store Constructor and Prototyping
 
+// Constructor
 let Store = function (location, minCust, maxCust, avgCookiePerSale) {
   this.location = location;
   this.minCust = minCust;
@@ -21,14 +22,13 @@ let Store = function (location, minCust, maxCust, avgCookiePerSale) {
   Store.trElems.push(this.trElem);
 };
 
+// Object global arrays
 Store.stores = [];
 Store.trElems = [];
 Store.tableData = [];
 
-Store.prototype.randomHourlyCustomers = function () {
-  return randomIntInclusive(this.minCust, this.maxCust);
-};
-
+// Methods
+// Fills hourly sales with random data
 Store.prototype.buildSalesData = function () {
   let total = 0;
   this.hourlySales[0] = this.location;
@@ -41,6 +41,12 @@ Store.prototype.buildSalesData = function () {
   Store.tableData.push(this.hourlySales);
 };
 
+// Fetches random data from global helper function
+Store.prototype.randomHourlyCustomers = function () {
+  return randomIntInclusive(this.minCust, this.maxCust);
+};
+
+// Appends new store row to table body or clears existing row for repopulation
 Store.prototype.renderStore = function (parent, isNew = false) {
   this.buildSalesData();
   if (isNew) {
@@ -75,92 +81,11 @@ renderSalesTable();
 
 //#region Global Functions
 
-// handles the initial rendering of the table on page load
-function renderSalesTable() {
-  const tableElem = createElement('table', salesTableSection);
-  const theadElem = createElement('thead', tableElem);
-  const tbodyElem = createElement('tbody', tableElem);
-  const tfootElem = createElement('tfoot', tableElem);
-
-  const trElemHeader = createElement('tr', theadElem);
-  for (let i = 0; i < headers.length; i++) {
-    renderHeader(trElemHeader, headers[i]);
-  }
-
-  for (let i = 0; i < Store.stores.length; i++) {
-    Store.stores[i].renderStore(tbodyElem, true);
-  }
-
-  renderFooter(tfootElem);
-}
-
 // creates an html tag element and appends it to a parent in the DOM
 function createElement(tag, parent) {
   const elem = document.createElement(tag);
   parent.appendChild(elem);
   return elem;
-}
-
-// creates a footer row and populates the row data
-function renderFooter(parent) {
-  const trElemFooter = createElement('tr', parent);
-  let footerData = totalColumnValues(Store.tableData);
-  for (let i = 0; i < footerData.length; i++) {
-    const thElem = createElement('th', trElemFooter);
-    thElem.textContent = `${footerData[i]}`;
-  }
-  return trElemFooter;
-}
-
-// creates a row of th elements in the table header section
-function renderHeader(parent, data) {
-  const thElem = createElement('th', parent);
-  thElem.textContent = `${data}`;
-}
-
-// places each item in an array into td tags in the parent row
-function populateRowData(arr, parent) {
-  for (let i = 0; i < arr.length; i++) {
-    const tdElem = createElement('td', parent);
-    tdElem.textContent = `${arr[i]}`;
-  }
-}
-
-// totals each column in a 2D array and returns an array of the results
-function totalColumnValues(arr2D) {
-  let subTotals = [];
-  subTotals[0] = 'Totals';
-  for (let i = 0; i < arr2D.length; i++) {
-    const row = arr2D[i];
-    for (let j = 1; j < row.length; j++) {
-      if (!subTotals[j]) {
-        subTotals[j] = 0;
-      }
-      const cell = row[j];
-      subTotals[j] += cell;
-    }
-  }
-  return subTotals;
-}
-
-// returns a random int between min and max (inclusive)
-function randomIntInclusive(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-// updates the table when a new store is added or store data is changed
-function updateTableData(store, isNew = false) {
-  const tableBodyElem = salesTableSection.firstChild.firstChild.nextSibling;
-  store.renderStore(tableBodyElem, isNew);
-  const tableFooterElem = salesTableSection.firstChild.lastChild;
-  tableFooterElem.firstChild.replaceWith(renderFooter(tableFooterElem));
-}
-
-// removes all the children of a given DOM node
-function removeAllChildren(parent) {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
 }
 
 // submit button event callback function to process form data
@@ -191,6 +116,87 @@ function handleAddStore(event) {
     updateTableData(store);
   }
 
+}
+
+// places each item in an array into td tags in the parent row
+function populateRowData(arr, parent) {
+  for (let i = 0; i < arr.length; i++) {
+    const tdElem = createElement('td', parent);
+    tdElem.textContent = `${arr[i]}`;
+  }
+}
+
+// returns a random int between min and max (inclusive)
+function randomIntInclusive(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+// removes all the children of a given DOM node
+function removeAllChildren(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}
+
+// creates a footer row and populates the row data
+function renderFooter(parent) {
+  const trElemFooter = createElement('tr', parent);
+  let footerData = totalColumnValues(Store.tableData);
+  for (let i = 0; i < footerData.length; i++) {
+    const thElem = createElement('th', trElemFooter);
+    thElem.textContent = `${footerData[i]}`;
+  }
+  return trElemFooter;
+}
+
+// creates a row of th elements in the table header section
+function renderHeader(parent, data) {
+  const thElem = createElement('th', parent);
+  thElem.textContent = `${data}`;
+}
+
+// handles the initial rendering of the table on page load
+function renderSalesTable() {
+  const tableElem = createElement('table', salesTableSection);
+  const theadElem = createElement('thead', tableElem);
+  const tbodyElem = createElement('tbody', tableElem);
+  const tfootElem = createElement('tfoot', tableElem);
+
+  const trElemHeader = createElement('tr', theadElem);
+  for (let i = 0; i < headers.length; i++) {
+    renderHeader(trElemHeader, headers[i]);
+  }
+
+  for (let i = 0; i < Store.stores.length; i++) {
+    Store.stores[i].renderStore(tbodyElem, true);
+  }
+
+  renderFooter(tfootElem);
+}
+
+// totals each column in a 2D array and returns an array of the results
+function totalColumnValues(arr2D) {
+  let subTotals = [];
+  subTotals[0] = 'Totals';
+  for (let i = 0; i < arr2D.length; i++) {
+    const row = arr2D[i];
+    for (let j = 1; j < row.length; j++) {
+      if (!subTotals[j]) {
+        subTotals[j] = 0;
+      }
+      const cell = row[j];
+      subTotals[j] += cell;
+    }
+  }
+  return subTotals;
+}
+
+// updates the table when a new store is added or store data is changed
+function updateTableData(store, isNew = false) {
+  const tableBodyElem = salesTableSection.firstChild.firstChild.nextSibling;
+  store.renderStore(tableBodyElem, isNew);
+  const tableFooterElem = salesTableSection.firstChild.lastChild;
+  tableFooterElem.firstChild.replaceWith(renderFooter(tableFooterElem));
 }
 
 //#endregion
