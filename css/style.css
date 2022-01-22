@@ -65,17 +65,24 @@ main {
 }
 
 #articles {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 680px;
+  justify-self: center;
+}
+
+#articles article:last-child {
+  margin-bottom: 0px;
 }
 
 article {
   width: 600px;
-  align-self: center;
   display: flex;
-  justify-content: space-evenly;
   padding: 10px;
-  margin: 10px;
+  margin-bottom: 10px;
+  margin-top: 0;
   background-color: rgb(12, 92, 92);
+  height: 250px
 }
 
 article p{
@@ -94,10 +101,12 @@ aside {
   width: 180px;
 }
 
-footer {
+#footer-content {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  width: 960px;
+  margin: auto;
 }
 
 footer img{
@@ -113,12 +122,14 @@ footer img{
   text-align: right;
   padding-top: 20px;
   font-size: larger;
+  margin-right: 35px;
 }
 
 #hours {
   text-align: left;
   padding-top: 20px;
   font-size: larger;
+  margin-left: 35px;
 }
 
 table {
