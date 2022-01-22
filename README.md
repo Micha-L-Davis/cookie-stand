@@ -1,7 +1,7 @@
 # LAB - 06
 ## Cookie Stand
 
-The first part of this project is to demonstrate manipulation of the DOM to produce a list of hourly sales at several store locations
+The purpose of this project is to demonstrate manipulation of the DOM with JavaScript
 
 ### Author: Micha Davis
 
